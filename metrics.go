@@ -5,6 +5,7 @@ import (
 	"net/http"
 )
 
+// ResponseTime represents the response times in milliseconds
 type ResponseTime struct {
 	Under125  int `json:"under125,omitempty"`
 	Under250  int `json:"under250,omitempty"`
@@ -14,6 +15,7 @@ type ResponseTime struct {
 	Under4000 int `json:"under4000,omitempty"`
 }
 
+// Requests gives statistics about requests made to check the status
 type Requests struct {
 	Samples      int          `json:"samples,omitempty"`
 	Failures     int          `json:"failures,omitempty"`
@@ -22,13 +24,15 @@ type Requests struct {
 	ResponseTime ResponseTime `json:"by_response_time,omitempty"`
 }
 
+// Host represents the host where the check was made
 type Host struct {
-	Ip          string `json:"ip,omitempty"`
+	IP          string `json:"ip,omitempty"`
 	City        string `json:"city,omitempty"`
 	Country     string `json:"country,omitempty"`
 	CountryCode string `json:"country_code,omitempty"`
 }
 
+// Timings represents the amount of time taken by each part of the connection
 type Timings struct {
 	Redirect   int `json:"redirect,omitempty"`
 	NameLookup int `json:"namelookup,omitempty"`
@@ -38,6 +42,7 @@ type Timings struct {
 	Total      int `json:"total,omitempty"`
 }
 
+// MetricItem is basically the core metric
 type MetricItem struct {
 	Apdex    float64  `json:"apdex,omitempty"`
 	Requests Requests `json:"requests,omitempty"`
@@ -45,12 +50,16 @@ type MetricItem struct {
 	Host     Host     `json:"host,omitempty"`
 }
 
+// Metrics represents multiple metrics
 type Metrics map[string]MetricItem
 
+// MetricService interacts with the metrics section of the API
 type MetricService struct {
 	client *Client
 }
 
+// List lists metrics available for a check identified by a taken, grouped by the given group
+// (host|time) over a period
 func (s *MetricService) List(token, group, from, to string) (Metrics, *http.Response, error) {
 	path := fmt.Sprintf(pathForToken(token)+"/metrics?group=%s", group)
 	// Optional from and to parameters

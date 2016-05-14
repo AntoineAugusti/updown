@@ -13,7 +13,7 @@ import (
 const (
 	libraryVersion = "0.0.1"
 	defaultBaseURL = "https://updown.io/api/"
-	userAgent      = "goupdown/" + libraryVersion
+	userAgent      = "Go Updown v" + libraryVersion
 	mediaType      = "application/json"
 )
 
@@ -42,8 +42,8 @@ type Client struct {
 	// User agent for client
 	UserAgent string
 
-	// ApiKey to use for the API
-	ApiKey string
+	// APIKey to use for the API
+	APIKey string
 
 	// Services used for communications with the API
 	Check    CheckService
@@ -63,7 +63,7 @@ func NewClient(apiKey string, httpClient *http.Client) *Client {
 		client:    httpClient,
 		BaseURL:   baseURL,
 		UserAgent: userAgent,
-		ApiKey:    apiKey,
+		APIKey:    apiKey,
 	}
 	c.Check = CheckService{client: c}
 	c.Downtime = DowntimeService{client: c}
@@ -99,7 +99,7 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 	req.Header.Add("Content-Type", mediaType)
 	req.Header.Add("Accept", mediaType)
 	req.Header.Add("User-Agent", userAgent)
-	req.Header.Add("X-API-KEY", c.ApiKey)
+	req.Header.Add("X-API-KEY", c.APIKey)
 	return req, nil
 }
 

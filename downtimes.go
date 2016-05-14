@@ -6,6 +6,7 @@ import (
 	"strconv"
 )
 
+// Downtime represents a downtime period for a check
 type Downtime struct {
 	Error     string `json:"error,omitempty"`
 	StartedAt string `json:"started_at,omitempty"`
@@ -13,10 +14,12 @@ type Downtime struct {
 	Duration  int    `json:"duration,omitempty"`
 }
 
+// DowntimeService interacts with the downtimes section of the API
 type DowntimeService struct {
 	client *Client
 }
 
+// List lists all known downtimes for a check
 func (s *DowntimeService) List(token string, pageNb int) ([]Downtime, *http.Response, error) {
 	path := fmt.Sprintf("checks/%s/downtimes?page=%s", token, strconv.Itoa(max(1, pageNb)))
 	req, err := s.client.NewRequest("GET", path, nil)
