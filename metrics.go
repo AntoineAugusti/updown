@@ -1,8 +1,8 @@
 package updown
 
 import (
-	"fmt"
 	"net/http"
+	"net/url"
 )
 
 // ResponseTime represents the response times in milliseconds
@@ -61,15 +61,20 @@ type MetricService struct {
 // List lists metrics available for a check identified by a taken, grouped by the given group
 // (host|time) over a period
 func (s *MetricService) List(token, group, from, to string) (Metrics, *http.Response, error) {
-	path := fmt.Sprintf(pathForToken(token)+"/metrics?group=%s", group)
+	u, _ := url.Parse(pathForToken(token) + "/metrics")
+	q := u.Query()
+	q.Add("group", group)
+
 	// Optional from and to parameters
 	if from != "" {
-		path += "&from=" + from
+		q.Add("from", from)
 	}
 	if to != "" {
-		path += "&to=" + to
+		q.Add("to", to)
 	}
-	req, err := s.client.NewRequest("GET", path, nil)
+	u.RawQuery = q.Encode()
+
+	req, err := s.client.NewRequest("GET", u.String(), nil)
 	if err != nil {
 		return nil, nil, err
 	}
