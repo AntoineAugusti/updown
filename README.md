@@ -4,3 +4,73 @@
 [![Coverage Status](http://codecov.io/github/AntoineAugusti/updown/coverage.svg?branch=master)](http://codecov.io/github/AntoineAugusti/updown?branch=master)
 
 # Updown Go client
+This is a Go client for [updown.io](https://updown.io). Updown lets you monitor websites and online services for an affordable price.
+
+## Installation
+Once you have a working Go installation locally, you can grab this package with the following command:
+```
+go get github.com/antoineaugusti/updown
+```
+
+## Documentation
+Head over to the [Go documentation](https://godoc.org/github.com/AntoineAugusti/updown) to see available methods and models and to https://updown.io/api for the Updown API.
+
+### Creating a client
+The client will be required to perform all actions against the API.
+```go
+package main
+
+import (
+    "github.com/antoineaugusti/updown"
+)
+
+func main() {
+    // Your API key can be retrieved at https://updown.io/settings/edit
+    // You can give a custom HTTP client
+    client := updown.NewClient("your-api-key", nil)
+}
+```
+
+### Listing all checks
+```go
+result, HTTPResponse, err := client.Check.List()
+```
+
+### Getting a check by its token
+```go
+result, HTTPResponse, err := client.Check.Get("s7su")
+```
+
+### Getting downtimes for a check
+```go
+token, page := "foo", 1 // 100 results per page
+result, HTTPResponse, err := client.Downtime.List(token, page)
+```
+
+### Adding a new check
+```go
+// See the struct for additional parameters
+item := updown.CheckItem{URL: "https://google.fr"}
+result, HTTPResponse, err := client.Check.Add(item)
+```
+
+### Updating a check
+```go
+token := "foo"
+// See the struct for additional parameters
+updated := updown.CheckItem{URL: "https://google.com"}
+result, HTTPResponse, err := client.Check.Update(token, updated)
+```
+
+### Updating a check
+```go
+token := "foo"
+result, HTTPResponse, err := client.Check.Remove(token)
+```
+
+### Getting metrics for a check
+```go
+token, group := "foo", "host"
+from, to := "2016-04-01 00:00:00 +0200", "2016-04-15 00:00:00 +0200"
+result, HTTPResponse, err := client.Metric.List(token, group, from, to)
+```
