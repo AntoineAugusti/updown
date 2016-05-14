@@ -3,6 +3,7 @@ package updown
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 )
 
 type Downtime struct {
@@ -16,8 +17,9 @@ type DowntimeService struct {
 	client *Client
 }
 
-func (s *DowntimeService) List(token string) ([]Downtime, *http.Response, error) {
-	req, err := s.client.NewRequest("GET", fmt.Sprintf("checks/%s/downtimes", token), nil)
+func (s *DowntimeService) List(token string, pageNb int) ([]Downtime, *http.Response, error) {
+	path := fmt.Sprintf("checks/%s/downtimes?page=%s", token, strconv.Itoa(max(1, pageNb)))
+	req, err := s.client.NewRequest("GET", path, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -29,4 +31,11 @@ func (s *DowntimeService) List(token string) ([]Downtime, *http.Response, error)
 	}
 
 	return res, resp, err
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
 }
