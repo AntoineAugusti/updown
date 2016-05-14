@@ -1,10 +1,11 @@
 package updown
 
 import (
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"os"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 const TQToken = "s7su"
@@ -39,11 +40,16 @@ func TestGet(t *testing.T) {
 
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
 	assert.Equal(t, "Teen Quotes", check.Alias)
+
+	check, resp, err := client.Check.Get("aaaaaa")
+	assert.Equal(t, http.StatusNotFound, resp.StatusCode)
+	assert.Equal(t, "GET https://updown.io/api/checks/aaaaaa: 404 ", err.Error())
 }
 
 func TestListDowntimes(t *testing.T) {
 	client := newClient()
-	downs, resp, _ := client.Downtime.List(TQToken, 1)
+	// Page should be set to 1 automatically
+	downs, resp, _ := client.Downtime.List(TQToken, -1)
 
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
 	assert.True(t, len(downs) > 1)
@@ -66,7 +72,7 @@ func TestAddUpdateRemoveCheck(t *testing.T) {
 
 func TestListMetrics(t *testing.T) {
 	client := newClient()
-	metricRes, resp, _ := client.Metric.List(TQToken, "host", "", "")
+	metricRes, resp, _ := client.Metric.List(TQToken, "host", "2016-04-01 00:00:00 +0200", "2016-04-15 00:00:00 +0200")
 
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
 	locations := [3]string{"gra", "gra", "sfo"}
