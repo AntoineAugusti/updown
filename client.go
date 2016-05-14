@@ -46,8 +46,9 @@ type Client struct {
 	ApiKey string
 
 	// Services used for communications with the API
-	Downtime DowntimeService
 	Check    CheckService
+	Downtime DowntimeService
+	Metric   MetricService
 }
 
 // NewClient returns a new DigitalOcean API client.
@@ -64,8 +65,9 @@ func NewClient(apiKey string, httpClient *http.Client) *Client {
 		UserAgent: userAgent,
 		ApiKey:    apiKey,
 	}
-	c.Downtime = DowntimeService{client: c}
 	c.Check = CheckService{client: c}
+	c.Downtime = DowntimeService{client: c}
+	c.Metric = MetricService{client: c}
 
 	return c
 }
