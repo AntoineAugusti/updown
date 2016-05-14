@@ -115,19 +115,19 @@ func (s *CheckService) Update(token string, data CheckItem) (Check, *http.Respon
 	return res, resp, err
 }
 
-func (s *CheckService) Remove(token string) (RemoveResponse, *http.Response, error) {
+func (s *CheckService) Remove(token string) (bool, *http.Response, error) {
 	req, err := s.client.NewRequest("DELETE", pathForToken(token), nil)
 	if err != nil {
-		return RemoveResponse{Deleted: false}, nil, err
+		return false, nil, err
 	}
 
 	var res RemoveResponse
 	resp, err := s.client.Do(req, &res)
 	if err != nil {
-		return RemoveResponse{Deleted: false}, resp, err
+		return false, resp, err
 	}
 
-	return res, resp, err
+	return res.Deleted, resp, err
 }
 
 func pathForToken(token string) string {
