@@ -18,6 +18,22 @@ func newClient() *Client {
 	return NewClient(apiKey, nil)
 }
 
+func TestTokenForAlias(t *testing.T) {
+	client := newClient()
+	// Cache miss + alias not found
+	token, err := client.Check.TokenForAlias("foo")
+	assert.Equal(t, "", token)
+	assert.Equal(t, ErrTokenNotFound, err)
+
+	// - Cache miss + match found after request
+	// - Cache hit
+	for i := 0; i < 2; i++ {
+		token, err = client.Check.TokenForAlias("Teen Quotes")
+		assert.Nil(t, err)
+		assert.Equal(t, TQToken, token)
+	}
+}
+
 func TestList(t *testing.T) {
 	client := newClient()
 	checks, resp, _ := client.Check.List()

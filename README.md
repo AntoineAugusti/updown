@@ -36,6 +36,13 @@ func main() {
 result, HTTPResponse, err := client.Check.List()
 ```
 
+### Getting an Updown token for a check's alias
+```go
+name := "Google"
+token, err := client.Check.TokenForAlias(name)
+```
+This method returns results from a memory cache by default if it's available. The first time, a request against the API will be performed.
+
 ### Getting a check by its token
 ```go
 token := "foo"

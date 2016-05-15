@@ -65,7 +65,7 @@ func NewClient(apiKey string, httpClient *http.Client) *Client {
 		UserAgent: userAgent,
 		APIKey:    apiKey,
 	}
-	c.Check = CheckService{client: c}
+	c.Check = CheckService{client: c, cache: NewMemoryCache()}
 	c.Downtime = DowntimeService{client: c}
 	c.Metric = MetricService{client: c}
 
