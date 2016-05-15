@@ -1,6 +1,7 @@
 package updown
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 )
@@ -53,10 +54,44 @@ type CheckItem struct {
 // CheckService interacts with the checks section of the API
 type CheckService struct {
 	client *Client
+	cache  Cache
 }
 
 type removeResponse struct {
 	Deleted bool `json:"deleted,omitempty"`
+}
+
+// ErrTokenNotFound indicates that we cannot find a token for the given name
+var ErrTokenNotFound = errors.New("Could not determine a token for the given name")
+
+// TokenForAlias finds the Updown token for a check's alias
+func (s *CheckService) TokenForAlias(name string) (string, error) {
+	// Retrieve from cache
+	if has, val := s.cache.Get(name); has {
+		return val, nil
+	}
+
+	// List all checks
+	checks, _, err := s.List()
+	if err != nil {
+		return "", err
+	}
+
+	// And try to find the appropriate name
+	token, found := "", false
+	for _, check := range checks {
+		s.cache.Put(check.Alias, check.Token)
+		if check.Alias == name {
+			found, token = true, check.Token
+		}
+	}
+
+	if found {
+		return token, nil
+	}
+
+	// Could not find a match
+	return "", ErrTokenNotFound
 }
 
 // List lists all the checks
