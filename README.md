@@ -38,7 +38,8 @@ result, HTTPResponse, err := client.Check.List()
 
 ### Getting a check by its token
 ```go
-result, HTTPResponse, err := client.Check.Get("s7su")
+token := "foo"
+result, HTTPResponse, err := client.Check.Get(token)
 ```
 
 ### Getting downtimes for a check
