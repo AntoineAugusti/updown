@@ -63,7 +63,7 @@ updated := updown.CheckItem{URL: "https://google.com"}
 result, HTTPResponse, err := client.Check.Update(token, updated)
 ```
 
-### Updating a check
+### Removing a check
 ```go
 token := "foo"
 result, HTTPResponse, err := client.Check.Remove(token)
