@@ -53,6 +53,11 @@ func TestListDowntimes(t *testing.T) {
 
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
 	assert.True(t, len(downs) > 1)
+
+	// Page with no downtimes
+	downs, resp, _ = client.Downtime.List(TQToken, 200)
+	assert.Equal(t, http.StatusOK, resp.StatusCode)
+	assert.Equal(t, 0, len(downs))
 }
 
 func TestAddUpdateRemoveCheck(t *testing.T) {
@@ -75,7 +80,7 @@ func TestListMetrics(t *testing.T) {
 	metricRes, resp, _ := client.Metric.List(TQToken, "host", "2016-04-01 00:00:00 +0200", "2016-04-15 00:00:00 +0200")
 
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
-	locations := [3]string{"gra", "gra", "sfo"}
+	locations := [4]string{"sgp", "sfo", "gra", "alpha"}
 	for _, location := range locations {
 		assert.Contains(t, metricRes, location)
 	}
