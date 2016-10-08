@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -93,10 +94,13 @@ func TestAddUpdateRemoveCheck(t *testing.T) {
 
 func TestListMetrics(t *testing.T) {
 	client := newClient()
-	metricRes, resp, _ := client.Metric.List(TQToken, "host", "2016-04-01 00:00:00 +0200", "2016-04-15 00:00:00 +0200")
+	now := time.Now()
+	timeFormat := "2006-01-02 15:04:05 -0700"
+	from, to := now.AddDate(0, 0, -1).Format(timeFormat), now.Format(timeFormat)
+	metricRes, resp, _ := client.Metric.List(TQToken, "host", from, to)
 
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
-	locations := [4]string{"sgp", "sfo", "gra", "alpha"}
+	locations := [8]string{"fra", "gra", "lan", "mia", "sgp", "sin", "syd", "tok"}
 	for _, location := range locations {
 		assert.Contains(t, metricRes, location)
 	}
