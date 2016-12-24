@@ -1,6 +1,7 @@
 package updown
 
 import (
+	"net"
 	"net/http"
 	"os"
 	"testing"
@@ -100,9 +101,55 @@ func TestListMetrics(t *testing.T) {
 	metricRes, resp, _ := client.Metric.List(TQToken, "host", from, to)
 
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
-	locations := [8]string{"fra", "gra", "lan", "mia", "sgp", "sin", "syd", "tok"}
-	for _, location := range locations {
+	for _, location := range updownLocations() {
 		assert.Contains(t, metricRes, location)
 	}
 	assert.True(t, len(metricRes) > 1)
+}
+
+func TestListNodes(t *testing.T) {
+	client := newClient()
+	nodeRes, resp, _ := client.Node.List()
+
+	assert.Equal(t, http.StatusOK, resp.StatusCode)
+	for _, location := range updownLocations() {
+		assert.Contains(t, nodeRes, location)
+	}
+	assert.True(t, len(nodeRes) > 1)
+}
+
+func TestListIPv4(t *testing.T) {
+	client := newClient()
+	IPs, resp, _ := client.Node.ListIPv4()
+
+	for _, ip := range IPs {
+		assert.True(t, isIPv4(net.ParseIP(ip)))
+	}
+
+	assert.Equal(t, http.StatusOK, resp.StatusCode)
+	assert.Equal(t, len(IPs), len(updownLocations()))
+}
+
+func TestListIPv6(t *testing.T) {
+	client := newClient()
+	IPs, resp, _ := client.Node.ListIPv6()
+
+	for _, ip := range IPs {
+		assert.True(t, isIPv6(net.ParseIP(ip)))
+	}
+
+	assert.Equal(t, http.StatusOK, resp.StatusCode)
+	assert.Equal(t, len(IPs), len(updownLocations()))
+}
+
+func updownLocations() []string {
+	return []string{"lan", "mia", "bhs", "gra", "fra", "sin", "tok", "syd"}
+}
+
+func isIPv4(ip net.IP) bool {
+	return ip.To4().String() == ip.String()
+}
+
+func isIPv6(ip net.IP) bool {
+	return ip.To16().String() == ip.String()
 }
