@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	libraryVersion = "0.2"
+	libraryVersion = "0.3"
 	defaultBaseURL = "https://updown.io/api/"
 	userAgent      = "Go Updown v" + libraryVersion
 	mediaType      = "application/json"
