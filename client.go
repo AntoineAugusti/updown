@@ -49,6 +49,7 @@ type Client struct {
 	Check    CheckService
 	Downtime DowntimeService
 	Metric   MetricService
+	Node     NodeService
 }
 
 // NewClient returns a new DigitalOcean API client.
@@ -68,6 +69,7 @@ func NewClient(apiKey string, httpClient *http.Client) *Client {
 	c.Check = CheckService{client: c, cache: NewMemoryCache()}
 	c.Downtime = DowntimeService{client: c}
 	c.Metric = MetricService{client: c}
+	c.Node = NodeService{client: c}
 
 	return c
 }
