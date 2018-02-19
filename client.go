@@ -52,7 +52,7 @@ type Client struct {
 	Node     NodeService
 }
 
-// NewClient returns a new DigitalOcean API client.
+// NewClient returns a new API client.
 func NewClient(apiKey string, httpClient *http.Client) *Client {
 	if httpClient == nil {
 		httpClient = http.DefaultClient
