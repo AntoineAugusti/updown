@@ -15,22 +15,26 @@ type SSL struct {
 
 // Check represents a check performed by Updown on a regular basis
 type Check struct {
-	Token       string  `json:"token,omitempty"`
-	URL         string  `json:"url,omitempty"`
-	Alias       string  `json:"alias,omitempty"`
-	LastStatus  int     `json:"last_status,omitempty"`
-	Uptime      float64 `json:"uptime,omitempty"`
-	Down        bool    `json:"down,omitempty"`
-	DownSince   string  `json:"down_since,omitempty"`
-	Error       string  `json:"error,omitempty"`
-	Period      int     `json:"period,omitempty"`
-	Apdex       float64 `json:"apdex_t,omitempty"`
-	Enabled     bool    `json:"enabled,omitempty"`
-	Published   bool    `json:"published,omitempty"`
-	LastCheckAt string  `json:"last_check_at,omitempty"`
-	NextCheckAt string  `json:"next_check_at,omitempty"`
-	FaviconURL  string  `json:"favicon_url,omitempty"`
-	SSL         SSL     `json:"ssl,omitempty"`
+	Token             string            `json:"token,omitempty"`
+	URL               string            `json:"url,omitempty"`
+	Alias             string            `json:"alias,omitempty"`
+	LastStatus        int               `json:"last_status,omitempty"`
+	Uptime            float64           `json:"uptime,omitempty"`
+	Down              bool              `json:"down,omitempty"`
+	DownSince         string            `json:"down_since,omitempty"`
+	Error             string            `json:"error,omitempty"`
+	Period            int               `json:"period,omitempty"`
+	Apdex             float64           `json:"apdex_t,omitempty"`
+	Enabled           bool              `json:"enabled,omitempty"`
+	Published         bool              `json:"published,omitempty"`
+	LastCheckAt       string            `json:"last_check_at,omitempty"`
+	NextCheckAt       string            `json:"next_check_at,omitempty"`
+	FaviconURL        string            `json:"favicon_url,omitempty"`
+	SSL               SSL               `json:"ssl,omitempty"`
+	StringMatch       string            `json:"string_match,omitempty"`
+	MuteUntil         string            `json:"mute_until,omitempty"`
+	DisabledLocations []string          `json:"disabled_locations,omitempty"`
+	CustomHeaders     map[string]string `json:"custom_headers,omitempty"`
 }
 
 // CheckItem represents a new check you want to be performed by Updown
@@ -40,7 +44,7 @@ type CheckItem struct {
 	// Interval in seconds (30, 60, 120, 300 or 600)
 	Period int `json:"period,omitempty"`
 	// APDEX threshold in seconds (0.125, 0.25, 0.5 or 1.0)
-	Apdex float64 `json:"apdex,omitempty"`
+	Apdex float64 `json:"apdex_t,omitempty"`
 	// Is the check enabled
 	Enabled bool `json:"enabled,omitempty"`
 	// Shall the status page be public
@@ -49,6 +53,12 @@ type CheckItem struct {
 	Alias string `json:"alias,omitempty"`
 	// Search for this string in the page
 	StringMatch string `json:"string_match,omitempty"`
+	// Mute notifications until given time, accepts a time, 'recovery' or 'forever'
+	MuteUntil string `json:"mute_until,omitempty"`
+	// Disabled monitoring locations. It's an array of abbreviated location names
+	DisabledLocations []string `json:"disabled_locations,omitempty"`
+	// The HTTP headers you want in updown requests
+	CustomHeaders map[string]string `json:"custom_headers,omitempty"`
 }
 
 // CheckService interacts with the checks section of the API
