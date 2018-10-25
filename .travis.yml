@@ -19,7 +19,7 @@ before_install:
   - go get golang.org/x/tools/cmd/cover
 
 install:
-  - if [[ $TRAVIS_GO_VERSION == 1.10* ]]; then go get github.com/golang/lint/golint; fi
+  - if [[ $TRAVIS_GO_VERSION == 1.10* ]]; then go get golang.org/x/lint/golint; fi
 
 script:
   - go get -t -v $(go list ./... | grep -v '/vendor/')
