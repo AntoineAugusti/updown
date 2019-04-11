@@ -20,13 +20,13 @@ type Check struct {
 	Alias             string            `json:"alias,omitempty"`
 	LastStatus        int               `json:"last_status,omitempty"`
 	Uptime            float64           `json:"uptime,omitempty"`
-	Down              bool              `json:"down,omitempty"`
+	Down              bool              `json:"down"`
 	DownSince         string            `json:"down_since,omitempty"`
 	Error             string            `json:"error,omitempty"`
 	Period            int               `json:"period,omitempty"`
 	Apdex             float64           `json:"apdex_t,omitempty"`
-	Enabled           bool              `json:"enabled,omitempty"`
-	Published         bool              `json:"published,omitempty"`
+	Enabled           bool              `json:"enabled"`
+	Published         bool              `json:"published"`
 	LastCheckAt       string            `json:"last_check_at,omitempty"`
 	NextCheckAt       string            `json:"next_check_at,omitempty"`
 	FaviconURL        string            `json:"favicon_url,omitempty"`
@@ -46,9 +46,9 @@ type CheckItem struct {
 	// APDEX threshold in seconds (0.125, 0.25, 0.5 or 1.0)
 	Apdex float64 `json:"apdex_t,omitempty"`
 	// Is the check enabled
-	Enabled bool `json:"enabled,omitempty"`
+	Enabled bool `json:"enabled"`
 	// Shall the status page be public
-	Published bool `json:"published,omitempty"`
+	Published bool `json:"published"`
 	// Human readable name
 	Alias string `json:"alias,omitempty"`
 	// Search for this string in the page
