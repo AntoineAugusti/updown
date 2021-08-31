@@ -50,6 +50,7 @@ type Client struct {
 	Downtime DowntimeService
 	Metric   MetricService
 	Node     NodeService
+	Webhook  WebhookService
 }
 
 // NewClient returns a new API client.
@@ -70,6 +71,7 @@ func NewClient(apiKey string, httpClient *http.Client) *Client {
 	c.Downtime = DowntimeService{client: c}
 	c.Metric = MetricService{client: c}
 	c.Node = NodeService{client: c}
+	c.Webhook = WebhookService{client: c}
 
 	return c
 }
