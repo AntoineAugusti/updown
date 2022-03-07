@@ -1,3 +1,6 @@
+// /!\ wehbooks have been deprecated in favor of recipients
+// https://updown.io/api#GET-/api/webhooks
+//
 package updown
 
 import (
