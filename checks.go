@@ -34,6 +34,7 @@ type Check struct {
 	StringMatch       string            `json:"string_match,omitempty"`
 	MuteUntil         string            `json:"mute_until,omitempty"`
 	DisabledLocations []string          `json:"disabled_locations,omitempty"`
+	Recipients        []string          `json:"recipients,omitempty"`
 	CustomHeaders     map[string]string `json:"custom_headers,omitempty"`
 }
 
@@ -57,6 +58,8 @@ type CheckItem struct {
 	MuteUntil string `json:"mute_until,omitempty"`
 	// Disabled monitoring locations. It's an array of abbreviated location names
 	DisabledLocations []string `json:"disabled_locations,omitempty"`
+	// Selected alert recipients. It's an array of recipient IDs you can get from the recipients API.
+	Recipients []string `json:"recipients,omitempty"`
 	// The HTTP headers you want in updown requests
 	CustomHeaders map[string]string `json:"custom_headers,omitempty"`
 }
